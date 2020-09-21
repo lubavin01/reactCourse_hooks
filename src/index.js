@@ -1,17 +1,53 @@
-import React from 'react';
+import React, { Component, useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+
+const App = () => {
+  const [value, setValue] = useState(0);
+  const [visible, setVisible] = useState(true);
+
+  if (visible) {
+    return (
+      <div>
+        <button onClick={() => setValue(v => v + 1)}>+</button>
+        <button onClick={() => setVisible(false)}>hide</button>
+        <ClassCounter value={value} />
+        <HookCounter value={value} />
+      </div >
+    );
+  } else {
+    return (<button onClick={() => setVisible(true)}>show</button>)
+  }
+}
+
+const HookCounter = ({ value }) => {
+
+  useEffect(() => {
+    console.log('use effect');
+    return () => console.log('clear')
+  }, null);
+
+  return (<p>{value}</p>)
+}
+
+class ClassCounter extends Component {
+  componentDidMount() {
+    console.log('component did mount');
+  }
+
+  componentDidUpdate() {
+    console.log('component did update');
+  }
+
+  componentWillUnmount() {
+    console.log('component will unmount');
+  }
+
+  render() {
+    return <p>{this.props.value}</p>
+  }
+}
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  <App />,
   document.getElementById('root')
 );
-
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
